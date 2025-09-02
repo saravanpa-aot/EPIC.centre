@@ -22,6 +22,7 @@ from centre_api.services.applications_service import ApplicationsService
 from centre_api.utils.util import cors_preflight
 
 from .apihelper import Api as ApiHelper
+from ..schemas.AccessRequest import AccessRequestCatalogSchema
 from ..schemas.application import ApplicationSchema
 
 API = Namespace('applications', description='Endpoints for applications management')
@@ -48,10 +49,25 @@ class CatalogApplications(Resource):
     """Resource for applications that can be requested."""
 
     @staticmethod
-    @ApiHelper.swagger_decorators(API, endpoint_description='Fetch applications that are'
+    @ApiHelper.swagger_decorators(API, endpoint_description='Fetch access request catalogs that are'
                                                             ' available to request access to')
     @auth.require
     def get():
         """Fetch apps the user can request access to."""
-        applications = ApplicationsService.get_request_catalog()
+        access_request_catalog = ApplicationsService.get_request_catalog()
+        return AccessRequestCatalogSchema(many=True).dump(access_request_catalog), HTTPStatus.OK
+
+
+@API.route('/access_request', methods=['GET'])
+class CatalogApplications(Resource):
+    """Resource for applications that can be requested."""
+
+    @staticmethod
+    @ApiHelper.swagger_decorators(API, endpoint_description='Fetch access request catalogs that are')
+    @auth.require
+    def get():
+        """Create access request."""
+        payload = API.payload
+        app_id = payload.get('app_id')
+        applications = ApplicationsService.create_access_request(app_id)
         return ApplicationSchema(many=True).dump(applications), HTTPStatus.OK
