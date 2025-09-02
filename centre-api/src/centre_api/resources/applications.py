@@ -58,16 +58,14 @@ class CatalogApplications(Resource):
         return AccessRequestCatalogSchema(many=True).dump(access_request_catalog), HTTPStatus.OK
 
 
-@API.route('/access_request', methods=['GET'])
-class CatalogApplications(Resource):
+@API.route('/<int:app_id>/access_request', methods=['GET'])
+class CatalogApplication(Resource):
     """Resource for applications that can be requested."""
 
     @staticmethod
     @ApiHelper.swagger_decorators(API, endpoint_description='Fetch access request catalogs that are')
     @auth.require
-    def get():
+    def get(app_id):
         """Create access request."""
-        payload = API.payload
-        app_id = payload.get('app_id')
         applications = ApplicationsService.create_access_request(app_id)
         return ApplicationSchema(many=True).dump(applications), HTTPStatus.OK

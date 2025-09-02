@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
 import { LabeledItem } from "./LabeledItem";
-import { UserEpicAppData } from "@/models/EpicApp";
 
 type AccessLogSectionProps = {
   user: {
