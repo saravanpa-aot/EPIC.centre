@@ -1,12 +1,12 @@
 import { Paper } from "@mui/material";
-import { EpicApp } from "@/models/EpicApp";
+import { RequestAccessCatalog } from "@/models/EpicApp";
 import { Header } from "../LaunchAppTile/Header";
 import { Body } from "./Body";
 
 type RequestAccessTileProps = {
-  epicApp: EpicApp;
+  data: RequestAccessCatalog;
 };
-export const RequestAccessTile = ({ epicApp }: RequestAccessTileProps) => {
+export const RequestAccessTile = ({ data }: RequestAccessTileProps) => {
   return (
     <Paper
       elevation={3}
@@ -14,8 +14,8 @@ export const RequestAccessTile = ({ epicApp }: RequestAccessTileProps) => {
         width: "345px",
       }}
     >
-      <Header data={epicApp} />
-      <Body epicApp={epicApp} />
+      <Header data={data} />
+      <Body data={data} />
     </Paper>
   );
 };

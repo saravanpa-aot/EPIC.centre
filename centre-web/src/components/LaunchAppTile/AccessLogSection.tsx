@@ -3,7 +3,10 @@ import { LabeledItem } from "./LabeledItem";
 import { UserEpicAppData } from "@/models/EpicApp";
 
 type AccessLogSectionProps = {
-  user: UserEpicAppData;
+  user: {
+    access_level?: string | null;
+    last_accessed?: string | null;
+  };
 };
 
 export const AccessLogSection = ({ user }: AccessLogSectionProps) => {

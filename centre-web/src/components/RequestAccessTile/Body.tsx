@@ -1,12 +1,42 @@
-import { EpicApp } from "@/models/EpicApp";
+import { RequestAccessCatalog, RequestAccessStatus } from "@/models/EpicApp";
 import { Box, Button, Divider } from "@mui/material";
 import { AccessLogSection } from "../LaunchAppTile/AccessLogSection";
+import { BCDesignTokens } from "epic.theme";
+import { LoadingButton } from "../Shared/LoadingButton";
 
-type BodyProps = {
-  epicApp: EpicApp;
+type RequestAccessButton = {
+  status: RequestAccessStatus;
+};
+const RequestAccessButton = ({ status }: RequestAccessButton) => {
+  if (status === RequestAccessStatus.PENDING) {
+    return (
+      <Button
+        variant="contained"
+        fullWidth
+        sx={{
+          border: `1px solid ${BCDesignTokens.supportBorderColorWarning}`,
+          backgroundColor: BCDesignTokens.supportSurfaceColorWarning,
+        }}
+      >
+        Request Sent
+      </Button>
+    );
+  }
+  return (
+    <LoadingButton
+      variant="contained"
+      fullWidth
+      disabled={status === RequestAccessStatus.ACCESSED}
+    >
+      Request Access
+    </LoadingButton>
+  );
 };
 
-export const Body = ({ epicApp }: BodyProps) => {
+type BodyProps = {
+  data: RequestAccessCatalog;
+};
+export const Body = ({ data }: BodyProps) => {
   return (
     <Box
       sx={{
@@ -18,9 +48,7 @@ export const Body = ({ epicApp }: BodyProps) => {
         gap: "8px",
       }}
     >
-      <Button variant="contained" fullWidth>
-        Request Access
-      </Button>
+      <RequestAccessButton status={data.status} />
       <Box
         sx={{
           padding: "8px 0 12px 0",
@@ -36,7 +64,7 @@ export const Body = ({ epicApp }: BodyProps) => {
       </Box>
 
       <Box width="100%">
-        <AccessLogSection user={epicApp.user} />
+        <AccessLogSection user={data.user} />
       </Box>
     </Box>
   );
