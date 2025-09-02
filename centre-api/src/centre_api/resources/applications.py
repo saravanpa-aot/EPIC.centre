@@ -30,9 +30,9 @@ API = Namespace('applications', description='Endpoints for applications manageme
 """
 
 
-@cors_preflight('GET, OPTIONS, POST')
-@API.route('', methods=['POST', 'GET', 'OPTIONS'])
-class Users(Resource):
+@cors_preflight('GET, OPTIONS')
+@API.route('', methods=['GET', 'OPTIONS'])
+class Applications(Resource):
     """Resource for managing applications."""
 
     @staticmethod
