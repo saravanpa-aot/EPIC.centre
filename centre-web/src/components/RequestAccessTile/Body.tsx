@@ -3,30 +3,62 @@ import { Box, Button, Divider } from "@mui/material";
 import { AccessLogSection } from "../LaunchAppTile/AccessLogSection";
 import { BCDesignTokens } from "epic.theme";
 import { LoadingButton } from "../Shared/LoadingButton";
+import {
+  useCreateAccessRequest,
+  useGetRequestCatalogApplications,
+} from "@/hooks/api/useApplications";
+import { useState } from "react";
+import { isAxiosError } from "axios";
+import { notify } from "../Shared/Snackbar/snackbarStore";
 
 type RequestAccessButton = {
+  appId: number;
   status: RequestAccessStatus;
 };
-const RequestAccessButton = ({ status }: RequestAccessButton) => {
+const RequestAccessButton = ({ appId, status }: RequestAccessButton) => {
+  const { mutateAsync: createAccessRequest } = useCreateAccessRequest();
+  const { refetch: refetchRequestCatalog } = useGetRequestCatalogApplications();
+  const [loading, setLoading] = useState(false);
+
+  const handleRequestAccess = async () => {
+    setLoading(true);
+    try {
+      await createAccessRequest(appId);
+      await refetchRequestCatalog();
+    } catch (error) {
+      const errorMessage = isAxiosError(error)
+        ? error.response?.data?.message || "Unknown error"
+        : "Unknown error";
+      notify.error(`Error creating access request: ${errorMessage}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (status === RequestAccessStatus.PENDING) {
     return (
       <Button
         variant="contained"
         fullWidth
-        sx={{
+        style={{
           border: `1px solid ${BCDesignTokens.supportBorderColorWarning}`,
           backgroundColor: BCDesignTokens.supportSurfaceColorWarning,
+          color: BCDesignTokens.iconsColorPrimary,
         }}
+        disabled
       >
         Request Sent
       </Button>
     );
   }
+
   return (
     <LoadingButton
       variant="contained"
       fullWidth
       disabled={status === RequestAccessStatus.ACCESSED}
+      loading={loading}
+      onClick={handleRequestAccess}
     >
       Request Access
     </LoadingButton>
@@ -48,7 +80,7 @@ export const Body = ({ data }: BodyProps) => {
         gap: "8px",
       }}
     >
-      <RequestAccessButton status={data.status} />
+      <RequestAccessButton appId={data.id} status={data.status} />
       <Box
         sx={{
           padding: "8px 0 12px 0",

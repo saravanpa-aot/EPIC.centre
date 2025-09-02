@@ -1,5 +1,5 @@
 import { centreRequest } from "@/utils/axiosUtils";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { QUERY_KEY } from "./constants";
 import { EpicApp, RequestAccessCatalog } from "@/models/EpicApp";
 
@@ -26,5 +26,18 @@ export const useGetRequestCatalogApplications = () => {
   return useQuery({
     queryKey: [QUERY_KEY.REQUEST_CATALOG],
     queryFn: getRequestCatalogApplications,
+  });
+};
+
+const createAccessRequest = (appId: number) => {
+  return centreRequest({
+    url: `applications/${appId}/access_request`,
+    method: "POST",
+  });
+};
+
+export const useCreateAccessRequest = () => {
+  return useMutation({
+    mutationFn: createAccessRequest,
   });
 };
