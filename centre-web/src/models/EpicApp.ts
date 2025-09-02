@@ -30,3 +30,19 @@ export enum EpicAppName {
   EPIC_SUBMIT = "epic_submit",
   EPIC_ENGAGE = "epic_engage",
 }
+
+export enum RequestAccessStatus {
+  ACCESSED = "accessed",
+  PENDING = "pending",
+  NOT_REQUESTED = "not_requested",
+}
+
+export type RequestAccessCatalog = {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  is_active: boolean;
+  status: RequestAccessStatus;
+  user: Partial<UserEpicAppData>;
+};

@@ -1,9 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { EpicApp } from "@/models/EpicApp";
 
 type HeaderProps = {
-  data: EpicApp;
+  data: {
+    title: string;
+    description: string;
+  };
 };
 export const Header = ({ data }: HeaderProps) => {
   const { title, description } = data;

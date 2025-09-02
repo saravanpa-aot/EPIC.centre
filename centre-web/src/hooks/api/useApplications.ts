@@ -1,7 +1,7 @@
 import { centreRequest } from "@/utils/axiosUtils";
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEY } from "./constants";
-import { EpicApp } from "@/models/EpicApp";
+import { EpicApp, RequestAccessCatalog } from "@/models/EpicApp";
 
 const getApplications = () => {
   return centreRequest<EpicApp[]>({
@@ -17,7 +17,7 @@ export const useGetApplications = () => {
 };
 
 const getRequestCatalogApplications = () => {
-  return centreRequest<EpicApp[]>({
+  return centreRequest<RequestAccessCatalog[]>({
     url: `applications/request-catalog`,
   });
 };
