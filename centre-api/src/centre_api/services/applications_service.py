@@ -11,7 +11,6 @@ class ApplicationsService:
     @classmethod
     def get_all(cls):
         """Get all apps."""
-
         accessed_apps = cls.get_user_accessed_apps_names()
         public_apps = [EpicAppName.DOCUMENT_SEARCH.value]
         accessed_apps.update(public_apps)
